@@ -16,7 +16,7 @@ function SearchResultComponent(result) {
   this.thumbnail = result.snippet.thumbnails.medium.url;
 
   // jQuery Components.
-  var $videoDiv = $('<div>')
+  var $videoDiv = $('<figure>')
     .addClass('search-result')
     .data('id', this.id)
     .data('channel', this.channel)
@@ -33,7 +33,7 @@ function SearchResultComponent(result) {
     .addClass('search-result-img')
     .attr('src', this.thumbnail);
 
-  var $videoCaption = $('<p>')
+  var $videoCaption = $('<figcaption>')
     .addClass('search-result-caption')
     .text(this.title);
 

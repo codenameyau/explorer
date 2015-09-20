@@ -35,7 +35,7 @@ require('./server/api/routes')(app);
 /********************************************************************
 * SERVER
 *********************************************************************/
-var server = app.listen(process.env.PORT || 8081, function() {
+var server = app.listen(process.env.EXPRESS_PORT || 8081, function() {
   var address = server.address();
   console.log('Listening on port: %s', address.port);
 });

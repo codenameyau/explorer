@@ -2,6 +2,8 @@
 
 Realtime youtube search app.
 
+Tech stack: Node, Express, Nunjucks, jQuery, and CSS.
+
 ## Development Setup
 
 You will need to obtain an API key from youtube and set this environment
