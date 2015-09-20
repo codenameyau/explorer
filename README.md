@@ -7,8 +7,8 @@ Realtime youtube search app.
 You will need to obtain an API key from youtube and set this environment
 variable to that key to gain access to the youtube API.
 
-```
-HORIZON_YOUTUBE_API
+```bash
+export HORIZON_YOUTUBE_API='YOUR API KEY'
 ```
 
 Then setup and run the application:

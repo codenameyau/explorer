@@ -1,0 +1,17 @@
+{
+  "name": "explorer",
+  "version": "1.0.0",
+  "description": "Instant youtube search",
+  "main": "app.js",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jorge Yau <codenameyau@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.3",
+    "nunjucks": "^2.0.0",
+    "request": "^2.61.0"
+  }
+}
