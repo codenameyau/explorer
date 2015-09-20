@@ -18,7 +18,6 @@ function SearchResultComponent(result) {
   // jQuery Components.
   var $videoDiv = $('<div>')
     .addClass('search-result')
-    .attr('tabindex', '-1')
     .data('id', this.id)
     .data('channel', this.channel)
     .data('title', this.title)
