@@ -65,6 +65,7 @@ footer {
   margin: 0 5px;
   width: 32.3%;
   height: 100%;
+  cursor: pointer;
   animation: fadein 1s;
   transition: linear 0.3s;
 }

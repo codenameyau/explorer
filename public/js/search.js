@@ -7,42 +7,45 @@ var YOUTUBE_URL = 'https://www.youtube.com/watch?v=';
 /********************************************************************
 * JQUERY COMPONENTS
 *********************************************************************/
-function SearchResultComponent(result) {
+function EmbeddedVideoComponent(id) {
+  var component = $('<iframe>');
+}
+
+function searchResultComponent(result) {
   // Video information.
-  this.id = result.id.videoId;
-  this.channel = result.snippet.channelTitle;
-  this.title = result.snippet.title;
-  this.description = result.snippet.description;
-  this.thumbnail = result.snippet.thumbnails.medium.url;
+  var resultId = result.id.videoId;
+  var resultChannel = result.snippet.channelTitle;
+  var resultTitle = result.snippet.title;
+  var resultDescription = result.snippet.description;
+  var resultThumbnail = result.snippet.thumbnails.medium.url;
 
   // jQuery Components.
-  var $videoDiv = $('<figure>')
+  var $videoDiv = $('<div>')
     .addClass('search-result')
-    .data('id', this.id)
-    .data('channel', this.channel)
-    .data('title', this.title)
-    .data('description', this.description)
-    .data('thumbnail', this.thumbnail);
+    .data('id', resultId)
+    .data('channel', resultChannel)
+    .data('title', resultTitle)
+    .data('description', resultDescription)
+    .data('thumbnail', resultThumbnail);
 
   var $videoLink = $('<a>')
     .addClass('search-result-link')
-    .attr('href', YOUTUBE_URL + this.id)
+    .attr('href', YOUTUBE_URL + resultId)
     .attr('target', '_blank');
 
   var $videoImg = $('<img>')
     .addClass('search-result-img')
-    .attr('src', this.thumbnail);
+    .attr('src', resultThumbnail);
 
   var $videoCaption = $('<figcaption>')
     .addClass('search-result-caption')
-    .text(this.title);
+    .text(resultTitle);
 
   // Combine Components.
-  this.component =
-    $videoDiv.append(
-      $videoLink.append(
-        $videoImg).append(
-        $videoCaption));
+  return $videoDiv.append(
+          $videoLink.append(
+            $videoImg).append(
+            $videoCaption));
 }
 
 
@@ -66,8 +69,7 @@ var clearSearchResults = function() {
 var updateSearchResults = function(error, data) {
   clearSearchResults();
   data.items.forEach(function(result) {
-    var searchResult = new SearchResultComponent(result);
-    $('#search-results').append(searchResult.component);
+    $('#search-results').append(searchResultComponent(result));
   });
 };
 
@@ -98,11 +100,16 @@ var bindMainSearch = function() {
   });
 };
 
-var bindTabKeyToSearch = function() {
-  $('body').keydown(function(e) {
-    if (e.which === 9) {
-      e.preventDefault();
-      $('#header-search').focus();
+var bindEmbeddedVideo = function() {
+  // Dynamic event listner for new search results.
+  $('#search-results').on('click', '.search-result', function() {
+
+    // Detach once.
+    var $this = $(this);
+    var $image = $this.find('.search-result-img');
+    if ($image) {
+      $image.remove();
+      $this.append('<p>').text('hi');
     }
   });
 };
@@ -117,4 +124,5 @@ var bindTabKeyToSearch = function() {
   // Bind event listeners.
   bindMainSearch();
   bindTabKeyToSearch();
+
 })();
