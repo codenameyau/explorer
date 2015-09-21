@@ -111,12 +111,11 @@ var bindMainSearch = function() {
 var bindEmbeddedVideo = function() {
   // Dynamic event listner for new search results.
   $('#search-results').on('click', '.search-result', function() {
-
-    // Detach once.
     var $this = $(this);
-    var $image = $this.find('.search-result-img');
-    if ($image) {
-      $image.remove();
+
+    // Detach image once.
+    if (!$this.find('.search-result-embed').length) {
+      $this.find('.search-result-img').remove();
       $this.prepend(embeddedVideoComponent($this.data('id')));
     }
   });
