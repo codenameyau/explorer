@@ -29,7 +29,7 @@ footer {
 
 .container {
   margin: 0 auto;
-  width: 85%;
+  width: 90%;
 }
 
 .header-logo {
@@ -75,7 +75,8 @@ footer {
   transition: linear 0.3s;
 }
 
-.search-result-img {
+.search-result-img,
+.search-result-embed {
   width: 100%;
   height: 230px;
 }

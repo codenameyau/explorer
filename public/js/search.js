@@ -1,17 +1,27 @@
 'use strict';
 
 var SEARCH_API = '/api/search';
-var YOUTUBE_URL = 'https://www.youtube.com/watch?v=';
+var EMBED_URL = 'https://www.youtube.com/embed/';
+var EMBED_PARAMS = $.param({
+  'autoplay': '1',
+  'showinfo': '0',
+  'controls': '1',
+  'iv_load_policy': '3'
+});
 
 
 /********************************************************************
 * JQUERY COMPONENTS
 *********************************************************************/
-function EmbeddedVideoComponent(id) {
-  var component = $('<iframe>');
-}
+var embeddedVideoComponent = function(id) {
+  return $('<iframe>')
+    .attr('class', 'search-result-embed')
+    .attr('src', EMBED_URL + id + '?' + EMBED_PARAMS)
+    .attr('frameborder', '0')
+    .attr('allowfullscreen', 'true');
+};
 
-function searchResultComponent(result) {
+var searchResultComponent = function(result) {
   // Video information.
   var resultId = result.id.videoId;
   var resultChannel = result.snippet.channelTitle;
@@ -29,9 +39,7 @@ function searchResultComponent(result) {
     .data('thumbnail', resultThumbnail);
 
   var $videoLink = $('<a>')
-    .addClass('search-result-link')
-    .attr('href', YOUTUBE_URL + resultId)
-    .attr('target', '_blank');
+    .addClass('search-result-link');
 
   var $videoImg = $('<img>')
     .addClass('search-result-img')
@@ -46,7 +54,7 @@ function searchResultComponent(result) {
           $videoLink.append(
             $videoImg).append(
             $videoCaption));
-}
+};
 
 
 /********************************************************************
@@ -109,7 +117,16 @@ var bindEmbeddedVideo = function() {
     var $image = $this.find('.search-result-img');
     if ($image) {
       $image.remove();
-      $this.append('<p>').text('hi');
+      $this.prepend(embeddedVideoComponent($this.data('id')));
+    }
+  });
+};
+
+var bindTabKeyToSearch = function() {
+  $('body').keydown(function(e) {
+    if (e.which === 9) {
+      e.preventDefault();
+      $('#header-search').focus();
     }
   });
 };
@@ -124,5 +141,6 @@ var bindEmbeddedVideo = function() {
   // Bind event listeners.
   bindMainSearch();
   bindTabKeyToSearch();
+  bindEmbeddedVideo();
 
 })();

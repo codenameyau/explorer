@@ -61,7 +61,7 @@
     "no-spaced-func": 1,
     "no-underscore-dangle": 0,
     "operator-assignment": [0, "always"],
-    "quote-props": [1, "consistent-as-needed", { "keywords": true }],
+    "quote-props": [0, "consistent-as-needed", { "keywords": true }],
     "quotes": [1, "single"],
     "semi": [2, "always"],
     "space-after-keywords": 1,
