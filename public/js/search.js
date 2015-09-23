@@ -1,6 +1,7 @@
 'use strict';
 
 var SEARCH_API = '/api/search';
+var SEARCH_QUERY = '/results?search_query=';
 var EMBED_URL = 'https://www.youtube.com/embed/';
 var EMBED_PARAMS = $.param({
   'autoplay': '1',
@@ -102,6 +103,8 @@ var bindMainSearch = function() {
     if (newSearchTerm !== currentSearchTerm) {
       delay(function() {
         currentSearchTerm = newSearchTerm;
+        window.history.pushState({}, 'results',
+          SEARCH_QUERY + window.encodeURIComponent(currentSearchTerm));
         sendSearchRequest(currentSearchTerm, updateSearchResults);
       }, 350);
     }

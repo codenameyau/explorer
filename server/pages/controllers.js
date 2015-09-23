@@ -1,8 +1,8 @@
 'use strict';
 
 exports.homepage = function(req, res) {
-
-  var context = {};
+  var context = {
+    search_query: req.query.search_query
+  };
   res.render('index.html', context);
-
 };

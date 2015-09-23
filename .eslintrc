@@ -45,7 +45,7 @@
     "valid-jsdoc": 0,
 
     // STYLISTIC
-    "camelcase": 1,
+    "camelcase": 0,
     "comma-spacing": 1,
     "comma-style": [1, "last"],
     "eol-last": 1,
