@@ -30,7 +30,7 @@ var searchResultComponent = function(result) {
   var resultDescription = result.snippet.description;
   var resultThumbnail = result.snippet.thumbnails.medium.url;
 
-  // jQuery Components.
+  // jQuery Components (explore React).
   var $videoDiv = $('<div>')
     .addClass('search-result')
     .data('id', resultId)
