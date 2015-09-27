@@ -7,8 +7,8 @@ body {
 }
 
 a {
-  text-decoration: none;
   color: #666;
+  text-decoration: none;
 }
 
 input[type="text"] {
@@ -28,6 +28,7 @@ footer {
 .container {
   margin: 0 auto;
   width: 90%;
+  max-width: 1280px;
 }
 
 .header-logo {
@@ -44,8 +45,8 @@ footer {
 * ANIMATIONS
 *********************************************************************/
 @keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 
