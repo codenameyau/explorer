@@ -4,6 +4,9 @@ Realtime youtube search app.
 
 Tech stack: Node, Express, Nunjucks, jQuery, and CSS.
 
+The application is fully responsive and has the following features which were
+implemented from scratch: instance search, infinite scroll, and video embedding.
+
 ## Development Setup
 
 You will need to obtain an API key from youtube and set this environment
