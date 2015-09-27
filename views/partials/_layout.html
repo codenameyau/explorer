@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width">
-  <title>Youtube Explorer</title>
+  <title>
+    Youtube Explorer |
+    {% block head_title %}
+      {% if title %} Search: {{ title }} {% else %} Home {% endif %}
+    {% endblock %}
+  </title>
 
   <!-- Resources -->
   <link rel="icon" type="image/png" href="favicon.png">

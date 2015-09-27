@@ -82,6 +82,13 @@ var updateSearchResults = function(error, data) {
   });
 };
 
+var updateDocumentTitle = function(searchTerm) {
+  if (searchTerm) {
+    window.document.title = 'Youtube Explorer | Seach: ' + searchTerm;
+  } else {
+    window.document.title = 'Youtube Explorer | Home';
+  }
+};
 
 /********************************************************************
 * EVENT LISTENERS
@@ -103,6 +110,7 @@ var bindMainSearch = function() {
     if (newSearchTerm !== currentSearchTerm) {
       delay(function() {
         currentSearchTerm = newSearchTerm;
+        updateDocumentTitle(currentSearchTerm);
         window.history.pushState({}, 'results',
           SEARCH_QUERY + window.encodeURIComponent(currentSearchTerm));
         sendSearchRequest(currentSearchTerm, updateSearchResults);
