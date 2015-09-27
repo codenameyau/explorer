@@ -13,7 +13,7 @@ exports.search = function(req, res) {
     qs: {
       part: 'snippet',
       q: searchTerm,
-      maxResults: 9,
+      maxResults: 12,
       key: API_KEY
     }},
     function(error, response, body) {
