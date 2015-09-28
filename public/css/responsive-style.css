@@ -2,10 +2,6 @@
 * RESPONSIVE
 *********************************************************************/
 @media (max-width: 1024px) {
-  .container {
-    max-width: 98%;
-  }
-
   .search-result {
     width: 33.333%;
   }

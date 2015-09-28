@@ -48,7 +48,7 @@ var searchResultComponent = function(result) {
 
   var $videoCaption = $('<figcaption>')
     .addClass('search-result-caption')
-    .text(truncateText(resultTitle, 60));
+    .text(utils.truncateText(resultTitle, 60));
 
   // Combine Components.
   return $videoDiv.append(
@@ -93,20 +93,20 @@ var updateDocumentTitle = function(searchTerm) {
 /********************************************************************
 * EVENT LISTENERS
 *********************************************************************/
-var currentSearchTerm = $('#header-search').val();
+var currentSearchTerm = $('#nav-search').val();
 
 var bindMainSearch = function() {
-  $('#header-search').keyup(function(e) {
+  $('#nav-search').keyup(function(e) {
     // Only send request if search term has changed.
     var newSearchTerm = e.target.value.trim();
     if (newSearchTerm !== currentSearchTerm) {
-      delay(function() {
+      utils.delay(function() {
         currentSearchTerm = newSearchTerm;
         updateDocumentTitle(currentSearchTerm);
         window.history.pushState({}, 'results',
-          SEARCH_QUERY + encodeReadableURL(currentSearchTerm));
+          SEARCH_QUERY + utils.encodeReadableURL(currentSearchTerm));
         sendSearchRequest(currentSearchTerm, updateSearchResults);
-      }, 350);
+      }, 320);
     }
   });
 };
@@ -128,7 +128,7 @@ var bindTabKeyToSearch = function() {
   $('body').keydown(function(e) {
     if (e.which === 9) {
       e.preventDefault();
-      $('#header-search').focus();
+      $('#nav-search').focus();
     }
   });
 };

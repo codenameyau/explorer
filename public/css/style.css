@@ -2,21 +2,15 @@
 * BASE LAYOUT
 *********************************************************************/
 body {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: 'Oxygen', sans-serif;
+  background-color: #fcfcfc;
   letter-spacing: 1px;
+  margin: 0;
 }
 
 a {
   color: #666;
   text-decoration: none;
-}
-
-input[type="text"] {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 20px;
-  padding: 0;
-  height: 38px;
-  text-indent: 10px;
 }
 
 footer {
@@ -29,19 +23,58 @@ footer {
 
 .container {
   margin: 0 auto;
+  width: 98%;
   max-width: 1280px;
 }
 
-.header-logo {
-  letter-spacing: 2px;
-  text-align: center;
-  font-size: 30px;
-}
 
-.header-search {
+/********************************************************************
+* NAVIGATION
+*********************************************************************/
+.nav {
+  background: url('../img/nav-bg.png');
+  border-bottom: 3px solid #d93347;
   width: 100%;
+  margin: 0 0 30px;
 }
 
+.nav-container {
+  width: 98%;
+  padding: 15px 0;
+  max-width: 1280px;
+  margin: auto;
+}
+
+.nav-logo {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.nav-logo a {
+  color: #fafafa;
+}
+
+.nav-search {
+  transition: .3s ease-out;
+  margin-left: 10px;
+  width: 300px;
+  font-size: 20px;
+  padding: 0;
+  height: 35px;
+  text-indent: 10px;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  color: #999;
+}
+
+.nav-search:focus {
+  transition: .3s ease-in;
+  background: #eee;
+  border: none;
+  color: #666;
+}
 
 /********************************************************************
 * ANIMATIONS
@@ -56,7 +89,7 @@ footer {
 * SEARCH RESULTS COMPONENT
 *********************************************************************/
 .search-results {
-  margin: 25px auto;
+  margin: 0 auto 20px auto;
   text-align: center;
 }
 
@@ -85,9 +118,9 @@ footer {
 
 .search-result-caption {
   margin: -4px auto 0 auto;
-  font-size: 14px;
-  background: #0c0c0c;
-  color: #f1f1f1;
+  font-size: 13px;
+  background: #1c1c1c;
+  color: #ccc;
   padding: 8px 0;
   height: 35px;
 }

@@ -23,5 +23,4 @@ exports.search = function(req, res) {
         res.json(JSON.parse(body));
       }
     });
-
 };

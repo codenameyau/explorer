@@ -28,7 +28,8 @@
   *******************************************************************/
   "globals": {
       "angular": false,
-      "THREE": false
+      "THREE": false,
+      "utils": true
   },
 
 
