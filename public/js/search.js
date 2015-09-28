@@ -104,7 +104,7 @@ var bindMainSearch = function() {
         currentSearchTerm = newSearchTerm;
         updateDocumentTitle(currentSearchTerm);
         window.history.pushState({}, 'results',
-          SEARCH_QUERY + window.encodeURIComponent(currentSearchTerm));
+          SEARCH_QUERY + encodeReadableURL(currentSearchTerm));
         sendSearchRequest(currentSearchTerm, updateSearchResults);
       }, 350);
     }

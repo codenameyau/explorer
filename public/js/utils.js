@@ -6,6 +6,10 @@ var truncateText = function(text, length) {
   } return text;
 };
 
+var encodeReadableURL = function(value) {
+  return window.encodeURIComponent(value).replace(/%20/g, '+');
+};
+
 var delay = (function() {
   var timer = 0;
   return function(callback, ms) {
