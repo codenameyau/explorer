@@ -4,8 +4,9 @@ Realtime youtube search app.
 
 Tech stack: Node, Express, Nunjucks, jQuery, and CSS.
 
-The application is fully responsive and has the following features which were
-implemented from scratch: instance search, infinite scroll, and video embedding.
+The application is fully responsive and has the following features that were
+implemented from scratch: instant search, infinite scroll, history state,
+and video embedding.
 
 ## Development Setup
 

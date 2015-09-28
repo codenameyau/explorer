@@ -48,7 +48,7 @@ var searchResultComponent = function(result) {
 
   var $videoCaption = $('<figcaption>')
     .addClass('search-result-caption')
-    .text(resultTitle);
+    .text(truncateText(resultTitle, 60));
 
   // Combine Components.
   return $videoDiv.append(
@@ -94,14 +94,6 @@ var updateDocumentTitle = function(searchTerm) {
 * EVENT LISTENERS
 *********************************************************************/
 var currentSearchTerm = $('#header-search').val();
-
-var delay = (function() {
-  var timer = 0;
-  return function(callback, ms) {
-    clearTimeout(timer);
-    timer = setTimeout(callback, ms);
-  };
-})();
 
 var bindMainSearch = function() {
   $('#header-search').keyup(function(e) {
