@@ -2,6 +2,10 @@
 * RESPONSIVE
 *********************************************************************/
 @media (max-width: 1024px) {
+  .nav {
+    margin: 0 0 10px 0;
+  }
+
   .search-result {
     width: 33.333%;
   }
@@ -20,5 +24,9 @@
 @media (max-width: 480px) {
   .search-result {
     width: 100%;
+  }
+
+  .search-result-img {
+    height: 240px;
   }
 }

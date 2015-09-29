@@ -106,7 +106,7 @@ var bindMainSearch = function() {
         window.history.pushState({}, 'results',
           SEARCH_QUERY + utils.encodeReadableURL(currentSearchTerm));
         sendSearchRequest(currentSearchTerm, updateSearchResults);
-      }, 320);
+      }, 340);
     }
   });
 };
