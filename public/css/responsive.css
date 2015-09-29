@@ -11,6 +11,10 @@
   .search-result {
     width: 50%;
   }
+
+  .nav-search {
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
