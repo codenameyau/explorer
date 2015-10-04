@@ -93,10 +93,10 @@ var updateDocumentTitle = function(searchTerm) {
 /********************************************************************
 * EVENT LISTENERS
 *********************************************************************/
-var currentSearchTerm = $('#nav-search').val();
+var currentSearchTerm = $('#search-input').val();
 
 var bindMainSearch = function() {
-  $('#nav-search').keyup(function(e) {
+  $('#search-input').keyup(function(e) {
     // Only send request if search term has changed.
     var newSearchTerm = e.target.value.trim();
     if (newSearchTerm !== currentSearchTerm) {
@@ -128,7 +128,7 @@ var bindTabKeyToSearch = function() {
   $('body').keydown(function(e) {
     if (e.which === 9) {
       e.preventDefault();
-      $('#nav-search').focus();
+      $('#search-input').focus();
     }
   });
 };
