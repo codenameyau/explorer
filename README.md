@@ -1,12 +1,10 @@
 # Youtube Explorer
 
-Realtime youtube search app.
+Realtime youtube search app. The application is fully responsive
+and has the following features that were implemented from scratch:
+instant search, infinite scroll, history state, and video embedding.
 
 Tech stack: Node, Express, Nunjucks, jQuery, and CSS.
-
-The application is fully responsive and has the following features that were
-implemented from scratch: instant search, infinite scroll, history state,
-and video embedding.
 
 ## Development Setup
 

@@ -9,7 +9,7 @@
 }
 
 .nav-container {
-  padding: 10px 0;
+  padding: 12px 0;
 }
 
 .nav-logo {
@@ -22,5 +22,23 @@
 }
 
 .nav-logo a {
-  color: #fafafa;
+  color: #ececec;
+}
+
+.nav-right {
+  float: right;
+}
+
+.nav-social i {
+  color: rgba(255, 255, 255, 0.35);
+  margin: 2px 0 0 8px;
+}
+
+.nav-social i:hover {
+  color: #ccc;
+}
+
+.nav-social i,
+.nav-social i:hover {
+  transition: linear 0.2s;
 }
