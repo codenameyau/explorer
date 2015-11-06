@@ -2,7 +2,9 @@
 
 var SEARCH_API = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
-var EMBED_URL = 'https://www.youtube.com/embed/';
+var YOUTUBE_URL = 'https://www.youtube.com';
+var EMBED_URL = YOUTUBE_URL + '/embed/';
+var SEARCH_TIMEOUT = 340;
 var EMBED_PARAMS = $.param({
   'autoplay': '1',
   'showinfo': '0',
@@ -82,6 +84,19 @@ var updateSearchResults = function(error, data) {
   });
 };
 
+var updateHistoryState = function(value) {
+  window.history.pushState({}, 'results', value);
+};
+
+var updateYoutubeLink = function(searchTerm) {
+  var $youtubeLink = $('.social-youtube');
+  if (searchTerm) {
+    $youtubeLink.attr('href', YOUTUBE_URL + SEARCH_QUERY + searchTerm);
+  } else {
+    $youtubeLink.attr('href', YOUTUBE_URL);
+  }
+};
+
 var updateDocumentTitle = function(searchTerm) {
   if (searchTerm) {
     window.document.title = 'Youtube Explorer | Seach: ' + searchTerm;
@@ -103,10 +118,13 @@ var bindMainSearch = function() {
       utils.delay(function() {
         currentSearchTerm = newSearchTerm;
         updateDocumentTitle(currentSearchTerm);
-        window.history.pushState({}, 'results',
-          SEARCH_QUERY + utils.encodeReadableURL(currentSearchTerm));
-        sendSearchRequest(currentSearchTerm, updateSearchResults);
-      }, 340);
+
+        // Use encoded search term for better validation.
+        var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
+        updateHistoryState(SEARCH_QUERY + encodedTerm);
+        updateYoutubeLink(encodedTerm);
+        sendSearchRequest(encodedTerm, updateSearchResults);
+      }, SEARCH_TIMEOUT);
     }
   });
 };
@@ -144,5 +162,4 @@ var bindTabKeyToSearch = function() {
   bindMainSearch();
   bindTabKeyToSearch();
   bindEmbeddedVideo();
-
 })();
