@@ -2,7 +2,7 @@
 
 var request = require('request');
 var YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/search';
-var API_KEY = process.env.HORIZON_YOUTUBE_API;
+var API_KEY = process.env.YOUTUBE_EXPLORER_API;
 
 exports.search = function(req, res) {
   var searchTerm = req.query.term;
@@ -13,7 +13,7 @@ exports.search = function(req, res) {
     qs: {
       part: 'snippet',
       q: searchTerm,
-      maxResults: 12,
+      maxResults: 24,
       key: API_KEY
     }},
     function(error, response, body) {
