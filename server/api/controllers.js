@@ -6,6 +6,8 @@ var API_KEY = process.env.YOUTUBE_EXPLORER_API;
 
 exports.search = function(req, res) {
   var searchTerm = req.query.term;
+  var searchCount = req.query.count || 12;
+  var nextPageToken = req.query.nextPageToken;
 
   // Send request to youtube's API
   request({
@@ -13,7 +15,8 @@ exports.search = function(req, res) {
     qs: {
       part: 'snippet',
       q: searchTerm,
-      maxResults: 24,
+      pageToken: nextPageToken,
+      maxResults: searchCount,
       key: API_KEY
     }},
     function(error, response, body) {

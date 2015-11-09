@@ -29,7 +29,8 @@
   "globals": {
       "angular": false,
       "THREE": false,
-      "utils": true
+      "utils": true,
+      "skully": true
   },
 
 

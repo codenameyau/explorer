@@ -5,12 +5,17 @@ var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
 var EMBED_URL = YOUTUBE_URL + '/embed/';
 var SEARCH_TIMEOUT = 340;
+var RESULTS = 12;
 var EMBED_PARAMS = $.param({
   'autoplay': '1',
   'showinfo': '0',
   'controls': '1',
   'iv_load_policy': '3'
 });
+
+// Used for storing page tokens.
+var prevPageToken = null;
+var nextPageToken = null;
 
 
 /********************************************************************
@@ -63,9 +68,15 @@ var searchResultComponent = function(result) {
 /********************************************************************
 * AJAX CALLS
 *********************************************************************/
-var sendSearchRequest = function(searchTerm, callback) {
-  $.get(SEARCH_API, {term: searchTerm}, function(data) {
-    callback(null, data);
+var sendSearchRequest = function(searchTerm, searchCount, callback) {
+  $.get(SEARCH_API, {
+      term: searchTerm,
+      count: searchCount,
+      nextPageToken: nextPageToken
+    }, function(data) {
+      prevPageToken = nextPageToken;
+      nextPageToken = data.nextPageToken;
+      callback(null, data);
   });
 };
 
@@ -77,11 +88,15 @@ var clearSearchResults = function() {
   $('#search-results').empty();
 };
 
-var updateSearchResults = function(error, data) {
-  clearSearchResults();
+var appendSearchResults = function(error, data) {
   data.items.forEach(function(result) {
     $('#search-results').append(searchResultComponent(result));
   });
+};
+
+var updateSearchResults = function(error, data) {
+  clearSearchResults();
+  appendSearchResults(error, data);
 };
 
 var updateHistoryState = function(value) {
@@ -105,6 +120,7 @@ var updateDocumentTitle = function(searchTerm) {
   }
 };
 
+
 /********************************************************************
 * EVENT LISTENERS
 *********************************************************************/
@@ -123,7 +139,7 @@ var bindMainSearch = function() {
         var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
-        sendSearchRequest(encodedTerm, updateSearchResults);
+        sendSearchRequest(encodedTerm, RESULTS, updateSearchResults);
       }, SEARCH_TIMEOUT);
     }
   });
@@ -153,9 +169,13 @@ var bindTabKeyToSearch = function() {
 
 var enableInfiniteScroll = function() {
   skully.onPageBottom(function() {
-    alert('bottom');
+    // Stop if all results are exhausted or in mid-loading.
+    if (nextPageToken !== undefined) {
+      sendSearchRequest(currentSearchTerm, 12, appendSearchResults);
+    }
   });
 };
+
 
 /********************************************************************
 * MAIN PROGRAM
@@ -163,7 +183,7 @@ var enableInfiniteScroll = function() {
 (function() {
   // Load up dynamic parts of the site.
   updateYoutubeLink(currentSearchTerm);
-  sendSearchRequest(currentSearchTerm, updateSearchResults);
+  sendSearchRequest(currentSearchTerm, RESULTS, updateSearchResults);
 
   // Bind event listeners.
   bindMainSearch();
