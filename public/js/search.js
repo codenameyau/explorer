@@ -151,15 +151,24 @@ var bindTabKeyToSearch = function() {
   });
 };
 
+var enableInfiniteScroll = function() {
+  skully.onPageBottom(function() {
+    alert('bottom');
+  });
+};
+
 /********************************************************************
 * MAIN PROGRAM
 *********************************************************************/
 (function() {
-  // Send search request to get popular videos by default.
+  // Load up dynamic parts of the site.
+  updateYoutubeLink(currentSearchTerm);
   sendSearchRequest(currentSearchTerm, updateSearchResults);
 
   // Bind event listeners.
   bindMainSearch();
   bindTabKeyToSearch();
   bindEmbeddedVideo();
+  enableInfiniteScroll();
+
 })();
