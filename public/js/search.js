@@ -4,8 +4,9 @@ var SEARCH_API = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
 var EMBED_URL = YOUTUBE_URL + '/embed/';
-var SEARCH_TIMEOUT = 340;
-var RESULTS = 12;
+var SEARCH_TIMEOUT = 350;
+var SCROLL_OFFSET = 400;
+var RESULTS = 24;
 var EMBED_PARAMS = $.param({
   'autoplay': '1',
   'showinfo': '0',
@@ -169,11 +170,12 @@ var bindTabKeyToSearch = function() {
 
 var enableInfiniteScroll = function() {
   skully.onPageBottom(function() {
-    // Stop if all results are exhausted or in mid-loading.
-    if (nextPageToken !== undefined) {
-      sendSearchRequest(currentSearchTerm, 12, appendSearchResults);
+    // Stop if all results are exhausted or in mid-request.
+    if (nextPageToken !== undefined && (prevPageToken !== nextPageToken)) {
+      prevPageToken = nextPageToken;
+      sendSearchRequest(currentSearchTerm, 36, appendSearchResults);
     }
-  });
+  }, SCROLL_OFFSET);
 };
 
 
