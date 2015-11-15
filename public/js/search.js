@@ -14,9 +14,10 @@ var EMBED_PARAMS = $.param({
   'iv_load_policy': '3'
 });
 
-// Used for storing page tokens.
+// State values.
 var prevPageToken = null;
 var nextPageToken = null;
+var videoDefinition = 'high';
 
 
 /********************************************************************
@@ -73,7 +74,8 @@ var sendSearchRequest = function(searchTerm, searchCount, callback) {
   $.get(SEARCH_API, {
       term: searchTerm,
       count: searchCount,
-      nextPageToken: nextPageToken
+      nextPageToken: nextPageToken,
+      videoDefinition: videoDefinition
     }, function(data) {
       prevPageToken = nextPageToken;
       nextPageToken = data.nextPageToken;
