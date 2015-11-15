@@ -3,7 +3,7 @@
 *********************************************************************/
 .nav {
   background: url('../img/nav-bg.png');
-  border-bottom: 3px solid #E04659;
+  border-bottom: 3px solid #E85A5A;
   width: 100%;
   margin: 0 0 30px;
 }
@@ -13,7 +13,7 @@
 }
 
 .nav-logo {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   letter-spacing: 2px;
   margin: 0 15px 0 0;
@@ -22,7 +22,19 @@
 }
 
 .nav-logo a {
-  color: #ececec;
+  color: #ccc;
+  transition: linear 0.3s;
+}
+
+.nav-logo a:hover {
+  color: #eee;
+  color: white;
+  transition: linear 0.3s;
+  text-shadow:
+   -1px -1px 0 #E85A5A,
+    1px -1px 0 #E85A5A,
+    -1px 1px 0 #E85A5A,
+     1px 1px 0 #E85A5A;
 }
 
 .nav-right {
@@ -32,13 +44,10 @@
 .nav-social i {
   color: rgba(255, 255, 255, 0.35);
   margin: 2px 0 0 8px;
+  transition: linear 0.3s;
 }
 
 .nav-social i:hover {
   color: #ccc;
-}
-
-.nav-social i,
-.nav-social i:hover {
-  transition: linear 0.2s;
+  transition: linear 0.3s;
 }
