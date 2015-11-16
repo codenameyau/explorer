@@ -19,6 +19,16 @@
 }
 
 @media (max-width: 480px) {
+  .nav-logo {
+    display: none;
+  }
+
+  .nav-date {
+    font-size: 20px;
+    margin: auto;
+    padding: 10px 0;
+  }
+
   .search-result {
     width: 100%;
   }

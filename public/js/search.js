@@ -3,6 +3,7 @@
 var SEARCH_API = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
+var YOUTUBE_START_DATE = new Date('2007-1-1');
 var EMBED_URL = YOUTUBE_URL + '/embed/';
 var SEARCH_TIMEOUT = 350;
 var SCROLL_OFFSET = 400;
@@ -68,23 +69,6 @@ var searchResultComponent = function(result) {
 
 
 /********************************************************************
-* AJAX CALLS
-*********************************************************************/
-var sendSearchRequest = function(searchTerm, searchCount, callback) {
-  $.get(SEARCH_API, {
-      term: searchTerm,
-      count: searchCount,
-      nextPageToken: nextPageToken,
-      videoDefinition: videoDefinition
-    }, function(data) {
-      prevPageToken = nextPageToken;
-      nextPageToken = data.nextPageToken;
-      callback(null, data);
-  });
-};
-
-
-/********************************************************************
 * DOM MANIPULATION
 *********************************************************************/
 var clearSearchResults = function() {
@@ -115,12 +99,45 @@ var updateYoutubeLink = function(searchTerm) {
   }
 };
 
+var updateNavDate = function(date) {
+  $('.nav-date-value').text(date.toDateString());
+};
+
 var updateDocumentTitle = function(searchTerm) {
   if (searchTerm) {
     window.document.title = 'Youtube Explorer | Seach: ' + searchTerm;
   } else {
     window.document.title = 'Youtube Explorer | Home';
   }
+};
+
+
+/********************************************************************
+* AJAX CALLS
+*********************************************************************/
+var sendSearchRequest = function(searchTerm, maxResults, callback) {
+  // Add randomness for fun.
+  var now = Date.now();
+  var publishedAfter = new Date(now);
+  var publishedBefore = new Date(now);
+  var randomDaysAgo = utils.randomInclusive(2,
+    utils.dayDiff(publishedAfter, YOUTUBE_START_DATE));
+  publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
+  publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
+  updateNavDate(publishedAfter);
+
+  $.get(SEARCH_API, {
+      q: searchTerm,
+      maxResults: maxResults,
+      nextPageToken: nextPageToken,
+      videoDefinition: videoDefinition,
+      publishedAfter: publishedAfter,
+      publishedBefore: publishedBefore
+    }, function(data) {
+      prevPageToken = nextPageToken;
+      nextPageToken = data.nextPageToken;
+      callback(null, data);
+  });
 };
 
 
@@ -136,10 +153,10 @@ var bindMainSearch = function() {
     if (newSearchTerm !== currentSearchTerm) {
       utils.delay(function() {
         currentSearchTerm = newSearchTerm;
-        updateDocumentTitle(currentSearchTerm);
 
         // Use encoded search term for better validation.
         var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
+        updateDocumentTitle(currentSearchTerm);
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
         sendSearchRequest(encodedTerm, RESULTS, updateSearchResults);
