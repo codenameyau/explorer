@@ -17,7 +17,7 @@ var EMBED_PARAMS = $.param({
 // State values.
 var prevPageToken = null;
 var nextPageToken = null;
-var videoDefinition = 'high';
+var videoDefinition = 'any';
 
 
 /********************************************************************

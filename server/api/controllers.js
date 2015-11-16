@@ -2,9 +2,11 @@
 
 var request = require('request');
 var random = require('../utils/random');
+var date = require('../utils/date');
 
 var YOUTUBE_API = 'https://www.googleapis.com/youtube/v3/search';
 var API_KEY = process.env.YOUTUBE_EXPLORER_API;
+var YOUTUBE_START_DATE = new Date('2006-1-1');
 
 exports.search = function(req, res) {
   var searchTerm = req.query.term;
@@ -24,9 +26,15 @@ exports.search = function(req, res) {
 
   // Shuffle up the homepage.
   if (!searchTerm) {
-    var dateFilter = new Date();
-    dateFilter.setDate(dateFilter.getDate() - random.inclusive(1, 7));
-    queryParams.publishedAfter = dateFilter;
+    var now = Date.now();
+    var dateStart = new Date(now);
+    var dateEnd = new Date(now);
+    var randomDaysAgo = random.inclusive(1,
+      date.dayDiff(dateStart, YOUTUBE_START_DATE));
+    dateStart.setDate(dateStart.getDate() - randomDaysAgo);
+    dateEnd.setDate(dateEnd.getDate() - randomDaysAgo + 1);
+    queryParams.publishedAfter = dateStart;
+    queryParams.publishedBefore = dateEnd;
   }
 
   // Send request to youtube's API.
