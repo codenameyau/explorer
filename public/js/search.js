@@ -100,7 +100,7 @@ var updateYoutubeLink = function(searchTerm) {
 };
 
 var updateNavDate = function(date) {
-  $('.nav-date-value').text(date.toDateString());
+  $('.nav-date').text(date.toDateString());
 };
 
 var updateDocumentTitle = function(searchTerm) {
