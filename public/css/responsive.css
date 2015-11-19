@@ -18,17 +18,18 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .nav-logo {
     display: none;
   }
 
-  .nav-date {
-    font-size: 20px;
+  .nav-info {
     margin: auto;
-    padding: 10px 0;
+    padding: 5px 0;
   }
+}
 
+@media (max-width: 480px) {
   .search-result {
     width: 100%;
   }

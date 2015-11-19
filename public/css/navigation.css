@@ -38,6 +38,34 @@
 }
 
 .nav-info {
-  font-size: 16px;
+  font-size: 15px;
+}
+
+.nav-info a {
   color: #ccc;
+  transition: linear 0.3s;
+}
+
+.nav-info a:hover {
+  color: #fcfcfc;
+  transition: linear 0.3s;
+}
+
+@keyframes slidein {
+  from { right: -260px; }
+  to { right: 2px; }
+}
+
+.nav-info:hover::before {
+  content: "Click me for a new date ;)";
+  color: #fafafa;
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 60px;
+  right: 2px;
+  z-index: 1;
+  border-radius: 5px;
+  padding: 12px;
+  animation-duration: 0.4s;
+  animation-name: slidein;
 }

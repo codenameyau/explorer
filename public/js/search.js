@@ -22,7 +22,7 @@ var nextPageToken = null;
 var videoDefinition = 'any';
 var currentSearchTerm = $('#search-input').val();
 
-// Set a random date for fun.
+// Set a blind date.
 var now = new Date();
 var midnight = new Date(now.toLocaleDateString());
 var publishedAfter = new Date(midnight);
