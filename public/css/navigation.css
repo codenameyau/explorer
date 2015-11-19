@@ -51,21 +51,17 @@
   transition: linear 0.3s;
 }
 
-@keyframes slidein {
-  from { right: -260px; }
-  to { right: 2px; }
-}
-
 .nav-info:hover::before {
-  content: "Click me for a new date ;)";
+  content: "Click me to get a new date ;)";
   color: #fafafa;
   background: rgba(0, 0, 0, 0.7);
   position: absolute;
+  width: 285px;
   top: 60px;
-  right: 2px;
-  z-index: 1;
-  border-radius: 5px;
   padding: 12px;
-  animation-duration: 0.4s;
-  animation-name: slidein;
+  border: 1px solid #060606;
+  border-radius: 5px;
+  z-index: 1;
+  animation-duration: 0.3s;
+  animation-name: fadein;
 }
