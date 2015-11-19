@@ -1,6 +1,7 @@
 'use strict';
 
-var SEARCH_API = '/api/search';
+var QUERY_API = 'http://suggestqueries.google.com/complete/search';
+var SEARCH_API_PROXY = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
 var YOUTUBE_START_DATE = new Date('2007-1-1');
@@ -15,10 +16,21 @@ var EMBED_PARAMS = $.param({
   'iv_load_policy': '3'
 });
 
-// State values.
+// Globals.
 var prevPageToken = null;
 var nextPageToken = null;
 var videoDefinition = 'any';
+var currentSearchTerm = $('#search-input').val();
+
+// Set a random date for fun.
+var now = new Date();
+var midnight = new Date(now.toLocaleDateString());
+var publishedAfter = new Date(midnight);
+var publishedBefore = new Date(midnight);
+var randomDaysAgo = utils.randomInclusive(2,
+  utils.dayDiff(publishedAfter, YOUTUBE_START_DATE));
+publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
+publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
 
 
 /********************************************************************
@@ -103,6 +115,10 @@ var updateNavDate = function(date) {
   $('.nav-date').text(date.toDateString());
 };
 
+var updateAutoComplete = function(searchTerm) {
+  console.log(searchTerm);
+};
+
 var updateDocumentTitle = function(searchTerm) {
   if (searchTerm) {
     window.document.title = 'Youtube Explorer | Seach: ' + searchTerm;
@@ -116,17 +132,7 @@ var updateDocumentTitle = function(searchTerm) {
 * AJAX CALLS
 *********************************************************************/
 var sendSearchRequest = function(searchTerm, maxResults, callback) {
-  // Add randomness for fun.
-  var now = Date.now();
-  var publishedAfter = new Date(now);
-  var publishedBefore = new Date(now);
-  var randomDaysAgo = utils.randomInclusive(2,
-    utils.dayDiff(publishedAfter, YOUTUBE_START_DATE));
-  publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
-  publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
-  updateNavDate(publishedAfter);
-
-  $.get(SEARCH_API, {
+  $.get(SEARCH_API_PROXY, {
       q: searchTerm,
       maxResults: maxResults,
       nextPageToken: nextPageToken,
@@ -144,8 +150,6 @@ var sendSearchRequest = function(searchTerm, maxResults, callback) {
 /********************************************************************
 * EVENT LISTENERS
 *********************************************************************/
-var currentSearchTerm = $('#search-input').val();
-
 var bindMainSearch = function() {
   $('#search-input').keyup(function(e) {
     // Only send request if search term has changed.
@@ -156,6 +160,7 @@ var bindMainSearch = function() {
 
         // Use encoded search term for better validation.
         var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
+        updateAutoComplete(currentSearchTerm);
         updateDocumentTitle(currentSearchTerm);
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
@@ -203,6 +208,7 @@ var enableInfiniteScroll = function() {
 *********************************************************************/
 (function() {
   // Load up dynamic parts of the site.
+  updateNavDate(publishedAfter);
   updateYoutubeLink(currentSearchTerm);
   sendSearchRequest(currentSearchTerm, RESULTS, updateSearchResults);
 
