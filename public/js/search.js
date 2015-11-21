@@ -1,7 +1,7 @@
 'use strict';
 
-var QUERY_API = 'http://suggestqueries.google.com/complete/search';
-var SEARCH_API_PROXY = '/api/search';
+var AUTOCOMPLETE_API = 'http://suggestqueries.google.com/complete/search';
+var SEARCH_API = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
 var YOUTUBE_START_DATE = new Date('2008-1-1');
@@ -72,7 +72,7 @@ var searchResultComponent = function(result) {
 
   var $videoCaption = $('<figcaption>')
     .addClass('search-result-caption')
-    .text(utils.truncateText(resultTitle, 60));
+    .text(utils.truncateText(resultTitle, 80));
 
   // Combine Components.
   return $videoDiv.append(
@@ -117,8 +117,8 @@ var updateNavDate = function(date) {
   $('.nav-date').text(date.toDateString());
 };
 
-var updateAutoComplete = function(searchTerm) {
-  console.log(searchTerm);
+var updateAutoComplete = function(data) {
+  console.log(data);
 };
 
 var updateDocumentTitle = function(searchTerm) {
@@ -134,7 +134,7 @@ var updateDocumentTitle = function(searchTerm) {
 * AJAX CALLS
 *********************************************************************/
 var sendSearchRequest = function(searchTerm, maxResults, callback) {
-  $.get(SEARCH_API_PROXY, {
+  $.get(SEARCH_API, {
       q: searchTerm,
       order: searchTerm ? 'relevance' : order,
       maxResults: maxResults,
@@ -146,6 +146,24 @@ var sendSearchRequest = function(searchTerm, maxResults, callback) {
       prevPageToken = nextPageToken;
       nextPageToken = data.nextPageToken;
       callback(null, data);
+  });
+};
+
+var jsonpRequest = function(url, data) {
+  $.ajax({
+    url: url,
+    dataType: 'jsonp',
+    data: data
+  });
+};
+
+var sendAutoCompleteRequest = function(searchTerm, callbackName) {
+  jsonpRequest(AUTOCOMPLETE_API, {
+    q: searchTerm,
+    client: 'firefox',
+    jsonp: callbackName,
+    ds: 'yt',
+    hl: 'en'
   });
 };
 
@@ -163,10 +181,10 @@ var bindMainSearch = function() {
 
         // Use encoded search term for better validation.
         var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
-        updateAutoComplete(currentSearchTerm);
         updateDocumentTitle(currentSearchTerm);
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
+        sendAutoCompleteRequest(currentSearchTerm, 'updateAutoComplete');
         sendSearchRequest(encodedTerm, RESULTS, updateSearchResults);
       }, SEARCH_TIMEOUT);
     }
