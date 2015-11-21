@@ -24,7 +24,7 @@ footer {
 .container {
   margin: 0 auto;
   width: 98%;
-  max-width: 1280px;
+  max-width: 1360px;
 }
 
 
@@ -57,7 +57,7 @@ footer {
 .search-result {
   display: inline-block;
   vertical-align: top;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   width: 25%;
   height: 100%;
   cursor: pointer;
@@ -74,7 +74,7 @@ footer {
 .search-result-embed,
 .search-result-caption {
   width: 99.2%;
-  height: 170px;
+  height: 190px;
 }
 
 .search-result-caption {

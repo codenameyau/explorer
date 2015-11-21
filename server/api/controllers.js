@@ -1,3 +1,7 @@
+/*!
+ * API DOCS
+ * https://developers.google.com/youtube/v3/docs/search/list
+ */
 'use strict';
 
 var request = require('request');
@@ -10,6 +14,7 @@ exports.search = function(req, res) {
     type: 'video',
     part: 'snippet',
     q: req.query.q,
+    order: req.query.order,
     pageToken: req.query.nextPageToken,
     maxResults: req.query.maxResults || 12,
     publishedAfter: new Date(req.query.publishedAfter),

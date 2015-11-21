@@ -4,7 +4,7 @@ var QUERY_API = 'http://suggestqueries.google.com/complete/search';
 var SEARCH_API_PROXY = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
-var YOUTUBE_START_DATE = new Date('2007-1-1');
+var YOUTUBE_START_DATE = new Date('2008-1-1');
 var EMBED_URL = YOUTUBE_URL + '/embed/';
 var SEARCH_TIMEOUT = 350;
 var SCROLL_OFFSET = 400;
@@ -20,6 +20,8 @@ var EMBED_PARAMS = $.param({
 var prevPageToken = null;
 var nextPageToken = null;
 var videoDefinition = 'any';
+var videoOrders = ['relevance', 'viewCount'];
+var order = videoOrders[utils.randomInclusive(0, 1)];
 var currentSearchTerm = $('#search-input').val();
 
 // Set a blind date.
@@ -134,6 +136,7 @@ var updateDocumentTitle = function(searchTerm) {
 var sendSearchRequest = function(searchTerm, maxResults, callback) {
   $.get(SEARCH_API_PROXY, {
       q: searchTerm,
+      order: searchTerm ? 'relevance' : order,
       maxResults: maxResults,
       nextPageToken: nextPageToken,
       videoDefinition: videoDefinition,
