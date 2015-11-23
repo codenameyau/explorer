@@ -30,7 +30,8 @@
       "angular": false,
       "THREE": false,
       "utils": true,
-      "skully": true
+      "skully": true,
+      "autocomplete": true
   },
 
 

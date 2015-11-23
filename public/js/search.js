@@ -1,14 +1,14 @@
 'use strict';
 
-var AUTOCOMPLETE_API = 'http://suggestqueries.google.com/complete/search';
+// Constants.
 var SEARCH_API = '/api/search';
 var SEARCH_QUERY = '/results?search_query=';
 var YOUTUBE_URL = 'https://www.youtube.com';
 var YOUTUBE_START_DATE = new Date('2008-1-1');
 var EMBED_URL = YOUTUBE_URL + '/embed/';
+var SEARCH_INPUT = '#search-input';
 var SEARCH_TIMEOUT = 350;
 var SCROLL_OFFSET = 400;
-var RESULTS = 24;
 var EMBED_PARAMS = $.param({
   'autoplay': '1',
   'showinfo': '0',
@@ -22,9 +22,10 @@ var nextPageToken = null;
 var videoDefinition = 'any';
 var videoOrders = ['relevance', 'viewCount'];
 var order = videoOrders[utils.randomInclusive(0, 1)];
-var currentSearchTerm = $('#search-input').val();
+var $searchInput = $(SEARCH_INPUT);
+var currentSearchTerm = $searchInput.val();
 
-// Set a blind date.
+// Set up a blind date.
 var now = new Date();
 var midnight = new Date(now.toLocaleDateString());
 var publishedAfter = new Date(midnight);
@@ -117,10 +118,6 @@ var updateNavDate = function(date) {
   $('.nav-date').text(date.toDateString());
 };
 
-var updateAutoComplete = function(data) {
-  console.log(data);
-};
-
 var updateDocumentTitle = function(searchTerm) {
   if (searchTerm) {
     window.document.title = 'Youtube Explorer | Seach: ' + searchTerm;
@@ -149,30 +146,12 @@ var sendSearchRequest = function(searchTerm, maxResults, callback) {
   });
 };
 
-var jsonpRequest = function(url, data) {
-  $.ajax({
-    url: url,
-    dataType: 'jsonp',
-    data: data
-  });
-};
-
-var sendAutoCompleteRequest = function(searchTerm, callbackName) {
-  jsonpRequest(AUTOCOMPLETE_API, {
-    q: searchTerm,
-    client: 'firefox',
-    jsonp: callbackName,
-    ds: 'yt',
-    hl: 'en'
-  });
-};
-
 
 /********************************************************************
 * EVENT LISTENERS
 *********************************************************************/
-var bindMainSearch = function() {
-  $('#search-input').keyup(function(e) {
+var bindSearchInput = function() {
+  $searchInput.keyup(function(e) {
     // Only send request if search term has changed.
     var newSearchTerm = e.target.value.trim();
     if (newSearchTerm !== currentSearchTerm) {
@@ -184,8 +163,8 @@ var bindMainSearch = function() {
         updateDocumentTitle(currentSearchTerm);
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
-        sendAutoCompleteRequest(currentSearchTerm, 'updateAutoComplete');
-        sendSearchRequest(encodedTerm, RESULTS, updateSearchResults);
+        autocomplete.suggest(currentSearchTerm);
+        sendSearchRequest(encodedTerm, 24, updateSearchResults);
       }, SEARCH_TIMEOUT);
     }
   });
@@ -208,7 +187,7 @@ var bindTabKeyToSearch = function() {
   $('body').keydown(function(e) {
     if (e.which === 9) {
       e.preventDefault();
-      $('#search-input').focus();
+      $searchInput.focus();
     }
   });
 };
@@ -231,12 +210,13 @@ var enableInfiniteScroll = function() {
   // Load up dynamic parts of the site.
   updateNavDate(publishedAfter);
   updateYoutubeLink(currentSearchTerm);
-  sendSearchRequest(currentSearchTerm, RESULTS, updateSearchResults);
+  sendSearchRequest(currentSearchTerm, 24, updateSearchResults);
 
   // Bind event listeners.
-  bindMainSearch();
+  bindSearchInput();
   bindTabKeyToSearch();
   bindEmbeddedVideo();
   enableInfiniteScroll();
+  autocomplete.bind(SEARCH_INPUT);
 
 })();
