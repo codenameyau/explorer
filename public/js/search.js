@@ -35,6 +35,15 @@ var randomDaysAgo = utils.randomInclusive(2,
 publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
 publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
 
+// Compute range of dates for refined search.
+var dayRange = 7;
+var weekAfter = new Date(publishedAfter);
+var weekBefore = new Date(publishedBefore);
+weekAfter.setDate(weekAfter.getDate() - dayRange);
+weekBefore.setDate(weekBefore.getDate() + dayRange);
+console.log(publishedAfter + ' ' + publishedBefore);
+console.log(weekAfter + ' ' + weekBefore);
+
 
 /********************************************************************
 * JQUERY COMPONENTS
@@ -217,6 +226,8 @@ var enableInfiniteScroll = function() {
   bindTabKeyToSearch();
   bindEmbeddedVideo();
   enableInfiniteScroll();
+
+  // Experiment with where callback should be.
   autocomplete.bind(SEARCH_INPUT);
 
 })();
