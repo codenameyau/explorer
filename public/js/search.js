@@ -30,12 +30,12 @@ var now = new Date();
 var midnight = new Date(now.toLocaleDateString());
 var publishedAfter = new Date(midnight);
 var publishedBefore = new Date(midnight);
-var randomDaysAgo = utils.randomInclusive(2,
-  utils.dayDiff(publishedAfter, YOUTUBE_START_DATE));
+var daysSinceStart = utils.dayDiff(publishedAfter, YOUTUBE_START_DATE);
+var randomDaysAgo = utils.randomInclusive(2, daysSinceStart);
 publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
 publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
 
-// Compute range of dates for refined search.
+// Use date range for refined search.
 var dayRange = 7;
 var weekAfter = new Date(publishedAfter);
 var weekBefore = new Date(publishedBefore);
@@ -64,7 +64,7 @@ var searchResultComponent = function(result) {
   var resultDescription = result.snippet.description;
   var resultThumbnail = result.snippet.thumbnails.medium.url;
 
-  // jQuery Components (mimic React).
+  // jQuery Components.
   var $videoDiv = $('<div>')
     .addClass('search-result')
     .data('id', resultId)
@@ -73,22 +73,24 @@ var searchResultComponent = function(result) {
     .data('description', resultDescription)
     .data('thumbnail', resultThumbnail);
 
-  var $videoLink = $('<a>')
-    .addClass('search-result-link');
-
   var $videoImg = $('<img>')
     .addClass('search-result-img')
     .attr('src', resultThumbnail);
 
+  var $videoLink = $('<a>')
+    .addClass('search-result-link')
+    .attr('href', YOUTUBE_URL + '/watch?v=' + resultId)
+    .attr('target', '_blank')
+    .text(utils.truncateText(resultTitle, 80));
+
   var $videoCaption = $('<figcaption>')
     .addClass('search-result-caption')
-    .text(utils.truncateText(resultTitle, 80));
+    .append($videoLink);
 
   // Combine Components.
   return $videoDiv.append(
-          $videoLink.append(
-            $videoImg).append(
-            $videoCaption));
+          $videoImg).append(
+          $videoCaption);
 };
 
 
