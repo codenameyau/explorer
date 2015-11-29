@@ -4,6 +4,7 @@ var autocomplete = autocomplete || {};
 autocomplete.API = 'http://suggestqueries.google.com/complete/search';
 autocomplete.element = null;
 
+
 /********************************************************************
 * INTERNAL METHODS
 *********************************************************************/
@@ -15,6 +16,8 @@ autocomplete.element = null;
 *********************************************************************/
 autocomplete.bind = function(selector) {
   autocomplete.element = $(selector);
+  // TODO: Add event listener on focus
+  // If focus show the autocomplete dom elements.
 };
 
 autocomplete.update = function(data) {

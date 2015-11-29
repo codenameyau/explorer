@@ -3,7 +3,7 @@
 *********************************************************************/
 .nav {
   background: #313131;
-  border-bottom: 3px solid #E85A5A;
+  border-bottom: 3px solid #F22D2D;
   width: 100%;
   margin: 0 0 30px;
 }
@@ -23,18 +23,18 @@
 
 .nav-logo a {
   color: #ccc;
-  transition: linear 0.3s;
+  transition: ease-in 0.3s;
 }
 
 .nav-logo a:hover {
   color: #eee;
   color: white;
-  transition: linear 0.3s;
+  transition: ease-in 0.3s;
   text-shadow:
-   -1px -1px 0 #E85A5A,
-    1px -1px 0 #E85A5A,
-    -1px 1px 0 #E85A5A,
-     1px 1px 0 #E85A5A;
+   -1px -1px 0 #F22D2D,
+    1px -1px 0 #F22D2D,
+    -1px 1px 0 #F22D2D,
+     1px 1px 0 #F22D2D;
 }
 
 .nav-info {
@@ -52,7 +52,7 @@
 }
 
 .nav-info:hover::before {
-  content: "Click me to get a new date ;)";
+  content: "Click here to get a new date :)";
   color: #fafafa;
   background: rgba(0, 0, 0, 0.7);
   position: absolute;

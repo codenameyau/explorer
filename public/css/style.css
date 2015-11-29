@@ -61,13 +61,6 @@ footer {
   width: 25%;
   height: 100%;
   cursor: pointer;
-  animation: fadein 1s;
-  transition: linear 0.3s;
-}
-
-.search-result:hover {
-  opacity: 0.8;
-  transition: linear 0.3s;
 }
 
 .search-result-img,
@@ -77,11 +70,22 @@ footer {
   height: 190px;
 }
 
+.search-result-img:hover {
+  opacity: 0.75;
+}
+
 .search-result-caption {
   margin: -4px auto 0 auto;
   font-size: 13px;
   background: #111;
-  color: #ccc;
   padding: 8px 0;
   height: 35px;
+}
+
+.search-result-caption:hover {
+  background: #F22D2D;
+}
+
+.search-result-caption a {
+  color: #ccc;
 }
