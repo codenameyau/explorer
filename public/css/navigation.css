@@ -3,7 +3,7 @@
 *********************************************************************/
 .nav {
   background: #313131;
-  border-bottom: 3px solid #F22D2D;
+  border-bottom: 3px solid #ED4444;
   width: 100%;
   margin: 0 0 30px;
 }
@@ -31,10 +31,10 @@
   color: white;
   transition: ease-in 0.3s;
   text-shadow:
-   -1px -1px 0 #F22D2D,
-    1px -1px 0 #F22D2D,
-    -1px 1px 0 #F22D2D,
-     1px 1px 0 #F22D2D;
+   -1px -1px 0 #ED4444,
+    1px -1px 0 #ED4444,
+    -1px 1px 0 #ED4444,
+     1px 1px 0 #ED4444;
 }
 
 .nav-info {

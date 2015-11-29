@@ -77,20 +77,21 @@ var searchResultComponent = function(result) {
     .addClass('search-result-img')
     .attr('src', resultThumbnail);
 
+  var $videoCaption = $('<figcaption>')
+    .addClass('search-result-caption')
+    .attr('title', 'Open video in YouTube')
+    .text(utils.truncateText(resultTitle, 80));
+
   var $videoLink = $('<a>')
     .addClass('search-result-link')
     .attr('href', YOUTUBE_URL + '/watch?v=' + resultId)
     .attr('target', '_blank')
-    .text(utils.truncateText(resultTitle, 80));
-
-  var $videoCaption = $('<figcaption>')
-    .addClass('search-result-caption')
-    .append($videoLink);
+    .append($videoCaption);
 
   // Combine Components.
   return $videoDiv.append(
           $videoImg).append(
-          $videoCaption);
+          $videoLink);
 };
 
 
@@ -183,14 +184,13 @@ var bindSearchInput = function() {
 
 var bindEmbeddedVideo = function() {
   // Dynamic event listner for new search results.
-  $('#search-results').on('click', '.search-result', function() {
+  $('#search-results').on('click', '.search-result-img', function() {
     var $this = $(this);
+    var $parent = $this.parent();
 
-    // Detach image once.
-    if (!$this.find('.search-result-embed').length) {
-      $this.find('.search-result-img').remove();
-      $this.prepend(embeddedVideoComponent($this.data('id')));
-    }
+    // Detach image once and replace with embedded video.
+    $this.remove();
+    $parent.prepend(embeddedVideoComponent($parent.data('id')));
   });
 };
 

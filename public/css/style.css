@@ -77,15 +77,12 @@ footer {
 .search-result-caption {
   margin: -4px auto 0 auto;
   font-size: 13px;
-  background: #111;
+  background: #151515;
   padding: 8px 0;
   height: 35px;
+  color: #ddd;
 }
 
 .search-result-caption:hover {
-  background: #F22D2D;
-}
-
-.search-result-caption a {
-  color: #ccc;
+  color: #FF8383;
 }
