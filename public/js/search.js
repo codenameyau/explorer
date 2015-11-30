@@ -175,7 +175,6 @@ var bindSearchInput = function() {
         updateDocumentTitle(currentSearchTerm);
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
-        autocomplete.suggest(currentSearchTerm);
         sendSearchRequest(encodedTerm, 24, updateSearchResults);
       }, SEARCH_TIMEOUT);
     }
@@ -188,7 +187,7 @@ var bindEmbeddedVideo = function() {
     var $this = $(this);
     var $parent = $this.parent();
 
-    // Detach image once and replace with embedded video.
+    // Replace image with embedded video.
     $this.remove();
     $parent.prepend(embeddedVideoComponent($parent.data('id')));
   });
@@ -218,7 +217,7 @@ var enableInfiniteScroll = function() {
 * MAIN PROGRAM
 *********************************************************************/
 (function() {
-  // Load up dynamic parts of the site.
+  // Load dynamic parts of the site.
   updateNavDate(publishedAfter);
   updateYoutubeLink(currentSearchTerm);
   sendSearchRequest(currentSearchTerm, 24, updateSearchResults);
@@ -229,7 +228,7 @@ var enableInfiniteScroll = function() {
   bindEmbeddedVideo();
   enableInfiniteScroll();
 
-  // Experiment with where callback should be.
-  autocomplete.bind(SEARCH_INPUT);
-
+  // Bind google suggestions.
+  suggestions.setEngine('youtube');
+  suggestions.bind(SEARCH_INPUT);
 })();
