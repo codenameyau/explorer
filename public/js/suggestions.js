@@ -12,6 +12,7 @@ suggestions.language = 'en';
 suggestions.format = 'jsonp';
 suggestions.delay = 300;
 suggestions.selector = null;
+suggestions.query = '';
 suggestions.engines = {
   'google': 'google search',
   'youtube': 'yt'
@@ -27,61 +28,58 @@ suggestions.formats = {
 /********************************************************************
 * METHODS
 *********************************************************************/
-suggestions.delay = function(fn, ms, immediate) {
+suggestions.debounce = function(fn, ms) {
   var timeout;
   return function() {
     var _this = this;
-    var args = arguments;
+    var _args = arguments;
 
-    var later = function() {
-      timeout = null;
-      if (!immediate) {
-        fn.apply(_this, args);
-      }
-    };
-
-    var callNow = immediate && !timeout;
     clearTimeout(timeout);
-    timeout = setTimeout(later, ms);
-    if (callNow) {
-      fn.apply(_this, args);
-    }
+    timeout = setTimeout(function() {
+      fn.apply(_this, _args);
+    }, ms);
   };
 };
-
 
 suggestions.setEngine = function(value) {
   suggestions.engine = suggestions.engines[value]
                     || suggestions.engines.google;
 };
 
-
-suggestions.update = function(data) {
+suggestions.updateCallback = function(data) {
   console.log(data);
 };
 
-
 suggestions.suggest = function(query) {
+  suggestions.query = query;
+
   $.ajax({
     url: suggestions.API,
     dataType: suggestions.format,
     data: {
       q: query,
       client: suggestions.formats[suggestions.format],
-      jsonp: 'suggestions.update',
+      jsonp: 'suggestions.updateCallback',
       ds: suggestions.engine,
       hl: suggestions.language
     }
   });
 };
 
-
 suggestions.bind = function(selector) {
+  // Create debounced function to save requests.
+  var suggestDebounced = suggestions.debounce(
+    suggestions.suggest, suggestions.delay);
+
+  // Store binded values in module.
   suggestions.selector = $(selector);
+  suggestions.query = suggestions.selector.val();
+
+  // Bind event listener on selector.
   suggestions.selector.keyup(function(e) {
     var query = e.target.value.trim();
-    if (query) {
-      suggestions.suggest(query);
+    if (query && query !== suggestions.query) {
+      suggestDebounced(query);
     }
   });
 };
