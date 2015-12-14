@@ -23,13 +23,13 @@
 
 .nav-logo a {
   color: #ccc;
-  transition: ease-in 0.3s;
+  transition: ease-in 0.25s;
 }
 
 .nav-logo a:hover {
   color: #eee;
   color: white;
-  transition: ease-in 0.3s;
+  transition: ease-in 0.25s;
   text-shadow:
    -1px -1px 0 #ED4444,
     1px -1px 0 #ED4444,
@@ -43,16 +43,16 @@
 
 .nav-info a {
   color: #ccc;
-  transition: linear 0.3s;
+  transition: ease-in 0.25s;
 }
 
 .nav-info a:hover {
   color: #fcfcfc;
-  transition: linear 0.3s;
+  transition: ease-in 0.25s;
 }
 
 .nav-info:hover::before {
-  content: "Click here to get a new date :)";
+  content: "Click here to get a new date ;)";
   color: #fafafa;
   background: rgba(0, 0, 0, 0.7);
   position: absolute;
@@ -62,6 +62,6 @@
   border: 1px solid #060606;
   border-radius: 5px;
   z-index: 1;
-  animation-duration: 0.3s;
+  animation-duration: 0.4s;
   animation-name: fadein;
 }

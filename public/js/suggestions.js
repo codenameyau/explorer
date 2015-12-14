@@ -1,4 +1,3 @@
-// TODO: Replace jquery with vanilla js.
 'use strict';
 
 var suggestions = suggestions || {};
@@ -26,6 +25,24 @@ suggestions.formats = {
 
 
 /********************************************************************
+* DOM COMPONENETS
+*********************************************************************/
+suggestions.suggestionsContainer = function() {
+  var $componentDiv = $('<div>')
+    .addClass('suggestions');
+  return $componentDiv;
+};
+
+suggestions.suggestion = function(result) {
+  var suggestionTerm = result[0];
+  var $componentDiv = $('<div>')
+    .addClass('suggestion')
+    .text(suggestionTerm);
+  return $componentDiv;
+};
+
+
+/********************************************************************
 * METHODS
 *********************************************************************/
 suggestions.debounce = function(fn, ms) {
@@ -47,12 +64,17 @@ suggestions.setEngine = function(value) {
 };
 
 suggestions.updateCallback = function(data) {
-  console.log(data);
+  var searchTerm = data[0];
+  var searchResults = data[1];
+  suggestions.$results.empty();
+
+  searchResults.forEach(function(value) {
+    suggestions.$results.append(suggestions.suggestion(value));
+  });
 };
 
 suggestions.suggest = function(query) {
   suggestions.query = query;
-
   $.ajax({
     url: suggestions.API,
     dataType: suggestions.format,
@@ -74,6 +96,10 @@ suggestions.bind = function(selector) {
   // Store binded values in module.
   suggestions.selector = $(selector);
   suggestions.query = suggestions.selector.val();
+  suggestions.$results = suggestions.suggestionsContainer();
+
+  // Append suggestions component.
+  $(selector).parent().append(suggestions.$results);
 
   // Bind event listener on selector.
   suggestions.selector.keyup(function(e) {

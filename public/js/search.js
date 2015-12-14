@@ -7,7 +7,7 @@ var YOUTUBE_URL = 'https://www.youtube.com';
 var YOUTUBE_START_DATE = new Date('2008-1-1');
 var EMBED_URL = YOUTUBE_URL + '/embed/';
 var SEARCH_INPUT = '#search-input';
-var SEARCH_TIMEOUT = 350;
+var SEARCH_DELAY = 350;
 var SCROLL_OFFSET = 400;
 var EMBED_PARAMS = $.param({
   'autoplay': '1',
@@ -176,7 +176,7 @@ var bindSearchInput = function() {
         updateHistoryState(SEARCH_QUERY + encodedTerm);
         updateYoutubeLink(encodedTerm);
         sendSearchRequest(encodedTerm, 24, updateSearchResults);
-      }, SEARCH_TIMEOUT);
+      }, SEARCH_DELAY);
     }
   });
 };
@@ -229,6 +229,7 @@ var enableInfiniteScroll = function() {
   enableInfiniteScroll();
 
   // Bind google suggestions.
+  suggestions.delay = SEARCH_DELAY;
   suggestions.setEngine('youtube');
   suggestions.bind(SEARCH_INPUT);
 })();
