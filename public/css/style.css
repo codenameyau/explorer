@@ -47,6 +47,7 @@ footer {
   font-size: 18px;
   text-indent: 8px;
   color: #333;
+  border: 1px solid #aaa;
 }
 
 .search-results {

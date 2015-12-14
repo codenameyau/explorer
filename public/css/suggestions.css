@@ -1,14 +1,15 @@
 .suggestions {
-  background: rgba(0, 0, 0, 0.75);
-  width: 98%;
+  width: 100%;
   height: auto;
+  border: 1px solid #aaa;
 }
 
 .suggestion {
   padding: 3px 0 7px 10px;
-  color: #fafafa;
+  color: #333;
+  border-top: 1px solid #e3e3e3;
 }
 
 .suggestion:hover {
-  background: red;
+  background: #ED4444;
 }

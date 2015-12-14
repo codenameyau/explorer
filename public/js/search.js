@@ -46,7 +46,7 @@ console.log(weekAfter + ' ' + weekBefore);
 
 
 /********************************************************************
-* JQUERY COMPONENTS
+* DOM COMPONENETS
 *********************************************************************/
 var embeddedVideoComponent = function(id) {
   return $('<iframe>')
@@ -158,26 +158,29 @@ var sendSearchRequest = function(searchTerm, maxResults, callback) {
   });
 };
 
+var triggerSearchEvent = function(searchTerm) {
+  // Only send request if search term has changed.
+  if (searchTerm !== currentSearchTerm) {
+    utils.delay(function() {
+      currentSearchTerm = searchTerm;
+
+      // Use encoded search term for better validation.
+      var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
+      updateDocumentTitle(currentSearchTerm);
+      updateHistoryState(SEARCH_QUERY + encodedTerm);
+      updateYoutubeLink(encodedTerm);
+      sendSearchRequest(encodedTerm, 24, updateSearchResults);
+    }, SEARCH_DELAY);
+  }
+};
 
 /********************************************************************
 * EVENT LISTENERS
 *********************************************************************/
 var bindSearchInput = function() {
   $searchInput.keyup(function(e) {
-    // Only send request if search term has changed.
-    var newSearchTerm = e.target.value.trim();
-    if (newSearchTerm !== currentSearchTerm) {
-      utils.delay(function() {
-        currentSearchTerm = newSearchTerm;
-
-        // Use encoded search term for better validation.
-        var encodedTerm = utils.encodeReadableURL(currentSearchTerm);
-        updateDocumentTitle(currentSearchTerm);
-        updateHistoryState(SEARCH_QUERY + encodedTerm);
-        updateYoutubeLink(encodedTerm);
-        sendSearchRequest(encodedTerm, 24, updateSearchResults);
-      }, SEARCH_DELAY);
-    }
+    var searchTerm = e.target.value.trim();
+    triggerSearchEvent(searchTerm);
   });
 };
 
@@ -228,8 +231,14 @@ var enableInfiniteScroll = function() {
   bindEmbeddedVideo();
   enableInfiniteScroll();
 
-  // Bind google suggestions.
+  // Bind youtube suggestions.
   suggestions.delay = SEARCH_DELAY;
   suggestions.setEngine('youtube');
   suggestions.bind(SEARCH_INPUT);
+  suggestions.$results.on('click', '> *', function(event) {
+    var text = event.target.innerText;
+    suggestions.selector.val(text);
+    suggestions.suggest(text);
+    triggerSearchEvent(text);
+  });
 })();

@@ -34,10 +34,9 @@ suggestions.suggestionsContainer = function() {
 };
 
 suggestions.suggestion = function(result) {
-  var suggestionTerm = result[0];
   var $componentDiv = $('<div>')
     .addClass('suggestion')
-    .text(suggestionTerm);
+    .text(result);
   return $componentDiv;
 };
 
@@ -64,13 +63,16 @@ suggestions.setEngine = function(value) {
 };
 
 suggestions.updateCallback = function(data) {
-  var searchTerm = data[0];
   var searchResults = data[1];
   suggestions.$results.empty();
 
-  searchResults.forEach(function(value) {
-    suggestions.$results.append(suggestions.suggestion(value));
-  });
+  // Limit to first 5 results.
+  for (var i=0; i<5; i++) {
+    var result = searchResults[i];
+    if (result) {
+      suggestions.$results.append(suggestions.suggestion(result[0]));
+    }
+  }
 };
 
 suggestions.suggest = function(query) {
@@ -99,7 +101,17 @@ suggestions.bind = function(selector) {
   suggestions.$results = suggestions.suggestionsContainer();
 
   // Append suggestions component.
-  $(selector).parent().append(suggestions.$results);
+  suggestions.selector.parent().append(suggestions.$results);
+
+  // Show results when selector is in focus.
+  suggestions.selector.on('focus', function() {
+    suggestions.$results.show();
+  });
+
+  // Hide results when selector is no longer in focus.
+  // suggestions.selector.on('blur', function() {
+  //   suggestions.$results.hide();
+  // });
 
   // Bind event listener on selector.
   suggestions.selector.keyup(function(e) {
