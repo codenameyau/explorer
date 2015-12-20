@@ -36,13 +36,11 @@ publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
 publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
 
 // Use date range for refined search.
-var dayRange = 7;
+var dayRange = 365;
 var weekAfter = new Date(publishedAfter);
 var weekBefore = new Date(publishedBefore);
 weekAfter.setDate(weekAfter.getDate() - dayRange);
 weekBefore.setDate(weekBefore.getDate() + dayRange);
-console.log(publishedAfter + ' ' + publishedBefore);
-console.log(weekAfter + ' ' + weekBefore);
 
 
 /********************************************************************

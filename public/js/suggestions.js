@@ -23,6 +23,11 @@ suggestions.formats = {
   'xml': 'toolbar'
 };
 
+suggestions.keys = {
+  'up': 38,
+  'down': 40,
+};
+
 
 /********************************************************************
 * DOM COMPONENETS
@@ -109,12 +114,14 @@ suggestions.bind = function(selector) {
   });
 
   // Hide results when selector is no longer in focus.
-  // suggestions.selector.on('blur', function() {
-  //   suggestions.$results.hide();
-  // });
+  suggestions.selector.on('blur', function() {
+    suggestions.$results.hide();
+  });
 
   // Bind event listener on selector.
   suggestions.selector.keyup(function(e) {
+    // Allow up and down key events.
+    console.log(e);
     var query = e.target.value.trim();
     if (query && query !== suggestions.query) {
       suggestDebounced(query);
