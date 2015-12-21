@@ -10,6 +10,7 @@
   border-top: 1px solid #e3e3e3;
 }
 
-.suggestion:hover {
+.suggestion:hover,
+.suggestion-active {
   background: #ED4444;
 }
