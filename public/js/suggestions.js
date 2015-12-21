@@ -14,6 +14,7 @@ suggestions.selector = null;
 suggestions.query = '';
 suggestions.min = 0;
 suggestions.max = 5;
+
 suggestions.engines = {
   'google': 'google search',
   'youtube': 'yt'
@@ -27,8 +28,17 @@ suggestions.formats = {
 
 suggestions.keys = {
   'up': 38,
-  'down': 40
+  'down': 40,
+  'enter': 13
 };
+
+suggestions.keymap = {};
+for (var key in suggestions.keys) {
+  if (suggestions.keys.hasOwnProperty(key)) {
+    var keyValue = suggestions.keys[key];
+    suggestions.keymap[keyValue] = key;
+  }
+}
 
 
 /********************************************************************
@@ -51,9 +61,8 @@ suggestions.suggestion = function(result) {
 /********************************************************************
 * INTERNAL METHODS
 *********************************************************************/
-suggestions._pressedArrowKeys = function(e) {
-  return e.keyCode === suggestions.keys.up
-      || e.keyCode === suggestions.keys.down;
+suggestions._pressedNavigationKeys = function(e) {
+  return e.keyCode in suggestions.keymap;
 };
 
 suggestions._cycleIndex = function(value, min, max) {
@@ -122,8 +131,6 @@ suggestions.bind = function(selector) {
   suggestions.selector = $(selector);
   suggestions.query = suggestions.selector.val();
   suggestions.$results = suggestions.suggestionsContainer();
-
-  // Append suggestions component.
   suggestions.selector.parent().append(suggestions.$results);
 
   // Show results when selector is in focus.
@@ -132,18 +139,27 @@ suggestions.bind = function(selector) {
   });
 
   // Hide results when selector is no longer in focus.
-  // suggestions.selector.on('blur', function() {
-  //   suggestions.$results.hide();
-  // });
+  suggestions.selector.on('blur', function() {
+    suggestions.$results.hide();
+  });
 
   // Cycle through up and down key events.
   suggestions.selector.keydown(function(e) {
-    if (suggestions._pressedArrowKeys(e)) {
+    if (suggestions._pressedNavigationKeys(e)) {
       e.preventDefault();
       var pressedUp = e.keyCode === suggestions.keys.up;
       var pressedDown = e.keyCode === suggestions.keys.down;
+      var pressedEnter = e.keyCode === suggestions.keys.enter;
       var $activeElement = $('.suggestions').find('.suggestion-active');
       var activeIndex = $activeElement.index();
+
+      // Hide suggestions if 'enter' key is pressed.
+      if (pressedEnter) {
+        suggestions.$results.hide();
+        suggestions.selector.val($activeElement.text()
+          || suggestions.selector.val());
+        return;
+      }
 
       // Navigate through the suggestions.
       if ($activeElement.length) {
@@ -168,12 +184,16 @@ suggestions.bind = function(selector) {
       $activeElement = $($suggestions[activeIndex]);
       $activeElement.addClass('suggestion-active');
 
-      // TODO: Change value of input.
+      // Change value of input.
+      suggestions.selector.val($activeElement.text());
     }
   });
 
   // Bind suggestion search to input.
   suggestions.selector.keyup(function(e) {
+    if (suggestions._pressedNavigationKeys(e)) { return; }
+    suggestions.$results.show();
+
     var query = e.target.value.trim();
     if (query && query !== suggestions.query) {
       suggestDebounced(query);
