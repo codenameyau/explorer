@@ -36,11 +36,8 @@ publishedAfter.setDate(publishedAfter.getDate() - randomDaysAgo);
 publishedBefore.setDate(publishedBefore.getDate() - randomDaysAgo + 1);
 
 // Use date range for refined search.
-var dayRange = 365;
-var weekAfter = new Date(publishedAfter);
-var weekBefore = new Date(publishedBefore);
-weekAfter.setDate(weekAfter.getDate() - dayRange);
-weekBefore.setDate(weekBefore.getDate() + dayRange);
+var searchAfter = new Date('2008-01-01');
+var searchBefore = new Date();
 
 
 /********************************************************************
@@ -140,15 +137,15 @@ var updateDocumentTitle = function(searchTerm) {
 /********************************************************************
 * AJAX CALLS
 *********************************************************************/
-var sendSearchRequest = function(searchTerm, maxResults, callback) {
+var sendSearchRequest = function(params, callback) {
   $.get(SEARCH_API, {
-      q: searchTerm,
-      order: searchTerm ? 'relevance' : order,
-      maxResults: maxResults,
+      q: params.q,
+      order: params.q ? 'relevance' : order,
+      maxResults: params.maxResults,
       nextPageToken: nextPageToken,
       videoDefinition: videoDefinition,
-      publishedAfter: publishedAfter,
-      publishedBefore: publishedBefore
+      publishedAfter: params.publishedAfter,
+      publishedBefore: params.publishedBefore
     }, function(data) {
       prevPageToken = nextPageToken;
       nextPageToken = data.nextPageToken;
@@ -156,7 +153,7 @@ var sendSearchRequest = function(searchTerm, maxResults, callback) {
   });
 };
 
-var triggerSearchEvent = function(searchTerm) {
+var searchInputEvent = function(searchTerm) {
   // Only send request if search term has changed.
   if (searchTerm !== currentSearchTerm) {
     utils.delay(function() {
@@ -167,7 +164,12 @@ var triggerSearchEvent = function(searchTerm) {
       updateDocumentTitle(currentSearchTerm);
       updateHistoryState(SEARCH_QUERY + encodedTerm);
       updateYoutubeLink(encodedTerm);
-      sendSearchRequest(encodedTerm, 24, updateSearchResults);
+      sendSearchRequest({
+        q: encodedTerm,
+        maxResults: 24,
+        publishedAfter: searchAfter,
+        publishedBefore: searchBefore
+      }, updateSearchResults);
     }, SEARCH_DELAY);
   }
 };
@@ -178,7 +180,7 @@ var triggerSearchEvent = function(searchTerm) {
 var bindSearchInput = function() {
   $searchInput.keyup(function(e) {
     var searchTerm = e.target.value.trim();
-    triggerSearchEvent(searchTerm);
+    searchInputEvent(searchTerm);
   });
 };
 
@@ -206,9 +208,15 @@ var bindTabKeyToSearch = function() {
 var enableInfiniteScroll = function() {
   skully.onPageBottom(function() {
     // Stop if all results are exhausted or in mid-request.
+    // TODO: Fix published date for home and searching.
     if (nextPageToken !== undefined && (prevPageToken !== nextPageToken)) {
       prevPageToken = nextPageToken;
-      sendSearchRequest(currentSearchTerm, 36, appendSearchResults);
+      sendSearchRequest({
+        q: currentSearchTerm,
+        maxResults: 36,
+        publishedAfter: publishedAfter,
+        publishedBefore: publishedBefore
+      }, appendSearchResults);
     }
   }, SCROLL_OFFSET);
 };
@@ -221,7 +229,12 @@ var enableInfiniteScroll = function() {
   // Load dynamic parts of the site.
   updateNavDate(publishedAfter);
   updateYoutubeLink(currentSearchTerm);
-  sendSearchRequest(currentSearchTerm, 24, updateSearchResults);
+  sendSearchRequest({
+    q: currentSearchTerm,
+    maxResults: 24,
+    publishedAfter: publishedAfter,
+    publishedBefore: publishedBefore
+  }, updateSearchResults);
 
   // Bind event listeners.
   bindSearchInput();
@@ -237,6 +250,6 @@ var enableInfiniteScroll = function() {
     var text = event.target.innerText;
     suggestions.selector.val(text);
     suggestions.suggest(text);
-    triggerSearchEvent(text);
+    searchInputEvent(text);
   });
 })();
